@@ -2,10 +2,10 @@
 
 const itemData = {
     item1: {
-        name: 'Finalista 01',
+        name: 'Finalista 1',
         image: 'https://picsum.photos/seed/animal/250/200',
         photographer: 'John Doe',
-        description: ' Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+        description: 'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
         score: 42
     },
     item2: {
@@ -23,3 +23,57 @@ const itemData = {
         score: 36
     }
 };
+
+document.addEventListener('DOMContentLoaded', () => {
+    // Selección de elementos según el HTML proporcionado
+    const select = document.getElementById('items');
+    const img = document.getElementById('displayImage');
+    const photographer = document.getElementById('photographer');
+    const description = document.getElementById('description');
+    const score = document.getElementById('score');
+    const btnIncrease = document.getElementById('increaseScore');
+    const btnDecrease = document.getElementById('decreaseScore');
+
+    // Llenar el select con los nombres
+    Object.entries(itemData).forEach(([key, item]) => {
+        const option = document.createElement('option');
+        option.value = key;
+        option.textContent = item.name;
+        select.appendChild(option);
+    });
+
+    // Función para mostrar los datos del ítem seleccionado
+    function mostrarItem(key) {
+        const item = itemData[key];
+        if (!item) return;
+        img.src = item.image;
+        photographer.value = item.photographer;
+        description.value = item.description;
+        score.value = item.score;
+    }
+
+    // Mostrar el primer ítem por defecto
+    const firstKey = Object.keys(itemData)[0];
+    select.value = firstKey;
+    mostrarItem(firstKey);
+
+    // Cambiar datos al seleccionar otro ítem
+    select.addEventListener('change', () => {
+        mostrarItem(select.value);
+    });
+
+    // Aumentar/disminuir puntaje
+    btnIncrease.addEventListener('click', (e) => {
+        e.preventDefault();
+        const key = select.value;
+        itemData[key].score++;
+        score.value = itemData[key].score;
+    });
+
+    btnDecrease.addEventListener('click', (e) => {
+        e.preventDefault();
+        const key = select.value;
+        itemData[key].score--;
+        score.value = itemData[key].score;
+    });
+});
